@@ -37,10 +37,10 @@ pipeline {
       nexusPublisher nexusInstanceId: '1234', nexusRepositoryId: 'releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'target/vprofile-v1.war']], mavenCoordinate: [artifactId: 'vprofile', groupId: 'com.visualpathit', packaging: 'war', version: '$BUILD_NUMBER']]] 
     }
    }
-    //stage('Deploy War') {
-      //steps {
-        //sh label: '', script: 'ansible-playbook deploy.yml'
-      //}
-     //}
+    stage('Deploy War') {
+      steps {
+        sh label: '', script: 'ansible-playbook deploy.yml'
+      }
+     }
   }
  }
