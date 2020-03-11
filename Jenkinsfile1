@@ -1,0 +1,46 @@
+pipeline {
+    agent any 
+    tools { 
+        maven 'maven' 
+          }
+  stages { 
+     stage('Preparation') { 
+     steps {
+       git 'https://github.com/Gowtham-Devops/node-app.git'
+         }
+      }
+     stage('Build') {
+     steps {
+      sh label: '', script: 'mvn clean package'
+       }
+      }
+     stage('Unit Test Results') {
+     steps {
+      junit '**/target/surefire-reports/*.xml'
+     }
+    }
+    stage('sonarqube') {
+    environment {
+        def scannerHome = tool 'sonarqube';
+    }
+    steps {
+      withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"
+        }
+        timeout(time: 10, unit: 'MINUTES') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+     }
+    stage('artifacts uploader') {
+    steps {
+   nexusArtifactUploader artifacts: [[artifactId: 'vprofile', classifier: '', file: 'nodeapp/target/nodeapp.war', type: 'war']], credentialsId: '1122', groupId: 'com.visualpathit', nexusUrl: '35.154.72.227', nexusVersion: 'nexus2', protocol: 'http', repository: 'releases', version: '$BUILD_NUMBER' 
+    }
+   }
+    stage('Deploy War') {
+      steps {
+        sh label: '', script: 'ansible-playbook deploy.yml'
+      }
+     }
+  }
+ }
