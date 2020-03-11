@@ -37,10 +37,10 @@ pipeline {
    nexusArtifactUploader artifacts: [[artifactId: 'vprofile', classifier: '', file: 'nodeapp/target/nodeapp.war', type: 'war']], credentialsId: '1122', groupId: 'com.visualpathit', nexusUrl: '35.154.72.227', nexusVersion: 'nexus2', protocol: 'http', repository: 'releases', version: '$BUILD_NUMBER' 
     }
    }
-    stage('Deploy War') {
-      steps {
-        sh label: '', script: 'ansible-playbook deploy.yml'
-      }
-     }
+    //stage('Deploy War') {
+      //steps {
+        //sh label: '', script: 'ansible-playbook deploy.yml'
+      //}
+     //}
   }
  }
