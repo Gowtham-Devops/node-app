@@ -34,7 +34,7 @@ pipeline {
      }
     stage('artifacts uploader') {
     steps {
-   nexusArtifactUploader artifacts: [[artifactId: 'vprofile', classifier: '', file: 'nodeapp-cicd/target/vprofile.war', type: 'war']], credentialsId: '1122', groupId: 'com.visualpathit', nexusUrl: '35.154.72.227', nexusVersion: 'nexus2', protocol: 'http', repository: 'releases', version: '$BUILD_NUMBER' 
+      nexusPublisher nexusInstanceId: '1234', nexusRepositoryId: 'releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'nodeapp-cicd/target/vprofile.war']], mavenCoordinate: [artifactId: 'vprofile', groupId: 'com.visualpathit', packaging: 'war', version: '$BUILD_NUMBER']]] 
     }
    }
     //stage('Deploy War') {
