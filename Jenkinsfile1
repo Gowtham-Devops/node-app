@@ -39,7 +39,7 @@ pipeline {
    }
     stage('Deploy War') {
       steps {
-        sh label: '', script: 'ansible-playbook deploy.yml'
+        sh label: '', script: 'ansible-playbook deploy1.yml'
       }
      }
   }
